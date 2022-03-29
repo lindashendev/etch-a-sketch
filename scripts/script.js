@@ -1,54 +1,49 @@
-// Create a webpage with a 16x16 grid of square divs.
+// grid container
 const container = document.querySelector(".container");
 
-for (let i = 0; i < Math.pow(16, 2); i++) {
-  const squares = document.createElement("div");
-  container.appendChild(squares);
+// create squares
+function createSquareGrid(num) {
+    for (let i = 0; i < Math.pow(num, 2); i++) {
+      const squares = document.createElement("div");
+      container.appendChild(squares);  
+    }  
+
+    const squares = document.querySelectorAll('.container div');
+
+    function randomize() {
+      return Math.floor(Math.random() * 255);
+    }
+
+    squares.forEach((item) => {
+      item.style.width = `calc((600px / ${num}) - 1px)`;
+      item.style.height = `calc((600px / ${num}) - 1px)`;
+      item.addEventListener('mouseover', function() {
+        const r = randomize();
+        const g = randomize();
+        const b = randomize();
+    
+        item.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+        item.style.opacity = `0.8`;
+      });
+    })
 }
 
-// Set up a “hover” effect so that the grid divs change color when your mouse passes over them
-const squares = document.querySelectorAll('.container div');
-squares.forEach((square) => {
-  square.style.width = `calc((600px / 16) - 1px)`;
-  square.style.height = `calc((600px / 16) - 1px)`;
-  square.addEventListener('mouseover', function() {
-    square.style.backgroundColor = "grey";
-  })
-})
+const clearBtn = document.querySelector("#clearBtn");
 
-// Add a button which will clear the current grid
-  // send a popup asking for the number of squares per side for the new grid
-const button = document.querySelector("#clearBtn");
+clearBtn.addEventListener('click', function() {
+    let userChoice;
+    const squares = document.querySelectorAll('.container div');
 
-button.addEventListener('click', function() {
-  const squares = document.querySelectorAll('.container div');
-  let userInput = prompt("How many squares per side? (maximum 100)");
+    do {
+      userChoice = prompt("How many squares per side? (maximum 100)");
+    } while (isNaN(userChoice) || userChoice > 100);
 
-  while (userInput > 100) {
-    userInput = prompt("How many squares per side? (maximum 100)");
-  }
-  // remove squares
-  squares.forEach((square) => {
-    square.remove();
-  })
-
-  // create new grid
-  for (let i = 0; i < Math.pow(userInput, 2); i++) {
-    const square = document.createElement("div");
-    square.style.width = `calc((600px / ${userInput}) - 1px)`;
-    square.style.height = `calc((600px / ${userInput}) - 1px)`;
-
-    square.addEventListener('mouseover', function(event) {
-      function randomizer() {
-        return Math.floor(Math.random() * 255);
-      }
-      const r = randomizer();
-      const g = randomizer();
-      const b = randomizer();
-      square.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
-      square.style.opacity = `0.8`;
-      ;
+    // remove previous squares
+    squares.forEach((square) => {
+      square.remove();
     })
-    container.appendChild(square);
-  }
-})
+
+    createSquareGrid(userChoice);
+});
+
+createSquareGrid(16);

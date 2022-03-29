@@ -11,6 +11,8 @@ body {
 }
 
 .container div {
+  /* width: calc((600px / 16) - 1px);
+  height: calc((600px / 16) - 1px); */
   background-color: rgb(223, 249, 252);
   border: 0.5px solid grey;
 }
